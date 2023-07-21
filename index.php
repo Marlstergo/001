@@ -1,99 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$book = 'Dark Matter';
+$read = true;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            display: grid;
-            place-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: sans-serif;
+$allBooks = [
+    "Dark Matter",
+    "Hail Mary",
+    "The Martian",
+    "The Three Body Problem",
+];
+
+$associativeBooks = [
+    [
+        'name' => 'Dark Matter',
+        'author' => 'Blake Crouch',
+        'purchaseUrl' => 'https://www.amazon.com/Dark-Matter-Novel-Blake-Crouch/dp/1101904224',
+        'released' => '20020',
+    ],
+    [
+        "name" => 'Hail Mary',
+        'author' => 'Mary linn',
+        "purchaseUrl" => "https://www.amazon.com/Hail-Mary-Andy-Weir/dp/0593170677",
+        'released' => '20020',
+    ]
+];
+
+function filterByAuthor($books, $author)
+{
+    $filteredBooks = [];
+    foreach ($books as $book) {
+        if ($book['author'] === $author) {
+            $filteredBooks[] = $book;
         }
-    </style>
-</head>
+    }
+    return $filteredBooks;
+};
 
-<body>
-    <?php
-    $book = 'Dark Matter';
-    $read = true;
-
-    $allBooks = [
-        "Dark Matter",
-        "Hail Mary",
-        "The Martian",
-        "The Three Body Problem",
-    ];
-
-    $associativeBooks = [
-        [
-            'name' => 'Dark Matter',
-            'author' => 'Blake Crouch',
-            'purchaseUrl' => 'https://www.amazon.com/Dark-Matter-Novel-Blake-Crouch/dp/1101904224',
-            'released' => '20020',
-        ],
-        [
-            "name" => 'Hail Mary',
-            'author' => 'Mary linn',
-            "purchaseUrl" => "https://www.amazon.com/Hail-Mary-Andy-Weir/dp/0593170677",
-            'released' => '20020',
-        ]
-    ];
-
-    function filterByAuthor($books, $author)
-    {
-        $filteredBooks = [];
-        foreach ($books as $book) {
-            if ($book['author'] === $author) {
-                $filteredBooks[] = $book;
-            }
+function filter($items, $fn)
+{
+    $filteredItems = [];
+    foreach ($items as $item) {
+        if ($fn($item)) {
+            $filteredItems[] = $item;
         }
-        return $filteredBooks;
-    };
+    }
+    return $filteredItems;
+}
 
+function inBuiltPhpFilter($items, $fn)
+{
+    return array_filter($items, $fn);
+}
 
-    ?>
-    <div>
-        <h1>
-            <?php
-            if ($read) {
-                echo "You have read {$book}";
-            } else {
-                echo "You have not read {$book}";
-            }
-            ?>
-        </h1>
+$filteredBooks = inBuiltPhpFilter($associativeBooks, function ($book) {
+    return $book['author'] === 'Mary linn';
+});
 
-        <br />
-
-        <h1>Recomended Books</h1>
-
-        <ul>
-            <?php
-            foreach ($allBooks as $book) {
-                echo "<li>{$book}</li>";
-            }
-            ?>
-            <?php foreach ($allBooks as $book) : ?>
-                <li><?= $book ?></li>
-            <?php endforeach; ?>
-        </ul>
-        <p><?= $allBooks[2] ?></p>
-        <p><?= $associativeBooks[1]['name'] ?></p>
-        <ul>
-            <?php foreach (filterByAuthor($associativeBooks, 'Mary linn') as $book) : ?>
-                <li>
-                    <a href="<?= $book['purchaseUrl'] ?>">
-                        <?= $book['name'] ?> released <?= $book['released'] ?>
-                    </a>
-                </li>
-            <?php endforeach; ?>
-
-        </ul>
-    </div>
-</body>
-
-</html>
+require 'index.view.php';
