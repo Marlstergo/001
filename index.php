@@ -41,7 +41,20 @@
             "purchaseUrl" => "https://www.amazon.com/Hail-Mary-Andy-Weir/dp/0593170677",
             'released' => '20020',
         ]
-    ]
+    ];
+
+    function filterByAuthor($books, $author)
+    {
+        $filteredBooks = [];
+        foreach ($books as $book) {
+            if ($book['author'] === $author) {
+                $filteredBooks[] = $book;
+            }
+        }
+        return $filteredBooks;
+    };
+
+
     ?>
     <div>
         <h1>
@@ -71,14 +84,12 @@
         <p><?= $allBooks[2] ?></p>
         <p><?= $associativeBooks[1]['name'] ?></p>
         <ul>
-            <?php foreach ($associativeBooks as $book) : ?>
-                <?php if ($book['author'] === "Blake Crouch") : ?>
-                    <li>
-                        <a href="<?= $book['purchaseUrl'] ?>">
-                            <?= $book['name'] ?> released <?= $book['released'] ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
+            <?php foreach (filterByAuthor($associativeBooks, 'Mary linn') as $book) : ?>
+                <li>
+                    <a href="<?= $book['purchaseUrl'] ?>">
+                        <?= $book['name'] ?> released <?= $book['released'] ?>
+                    </a>
+                </li>
             <?php endforeach; ?>
 
         </ul>
