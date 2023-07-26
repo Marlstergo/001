@@ -1,33 +1,21 @@
 <?php
 
 require 'functions.php';
+require 'Database.php';
 
-class Database
-{
-    public $connection;
+$config = require 'config.php';
+// dd(http_build_query($config, '', ';'));
 
-    // create contructor
-    public function __construct()
-    {
-        $dsn = "mysql:host=localhost;port=3306;dbname=php;user=root;charset=utf8mb4";
-        $this->connection = new PDO($dsn);
-    }
+$db = new Database($config, 'root', '');
 
-    public function query($query)
-    {
-        $statement = $this->connection->prepare($query);
-        $statement->execute();
+$id = $_GET['id'] ?? '1';
 
-        return $statement;
-    }
-}
+$query = "select * from posts where id = ?";
 
 
-$db = new Database();
+$posts = $db->query($query, [$id])->fetchAll();
 
-$posts = $db->query("select * from posts")->fetchAll(PDO::FETCH_ASSOC);
-
-// dd($posts[0]['author']);
+dd($posts);
 
 foreach ($posts as $post) {
     echo "<li>" . $post['title'] . '  Author:  ' . "<b>" . $post['author'] . "</b>" .  "</li>";
