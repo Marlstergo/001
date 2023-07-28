@@ -8,14 +8,15 @@ $config = require 'config.php';
 
 $db = new Database($config, 'root', '');
 
-$id = $_GET['id'] ?? '1';
+$id = $_GET['id'] ?? ['1'];
+
+// dd($id);
 
 $query = "select * from posts where id = ?";
 
 
 $posts = $db->query($query, [$id])->fetchAll();
 
-dd($posts);
 
 foreach ($posts as $post) {
     echo "<li>" . $post['title'] . '  Author:  ' . "<b>" . $post['author'] . "</b>" .  "</li>";
