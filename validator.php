@@ -6,7 +6,10 @@ class Validator
     {
         return is_string(trim($string)) && strlen($string) >= $min && strlen($string) <= $max;
     }
-
+    public static function isEmail($email)
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
 
     // public static function validate($data, $rules) {
     //     $errors = [];
