@@ -4,14 +4,15 @@ namespace Core;
 
 class Router
 {
-    protected $routes = [];
+    private $routes = [];
 
     public function add($method, $uri, $controller)
     {
         $this->routes[] = [
             'uri' => $uri,
             'controller' => $controller,
-            'method' => $method
+            'method' => $method,
+            'middleware' => ''
         ];
     }
 
@@ -49,6 +50,10 @@ class Router
         }
 
         $this->abort();
+    }
+
+    public function only ($keys) {
+        $this->routes[array_key_last($this->routes)]['middleware'] = $keys;
     }
 
     protected function abort($code = 404)
